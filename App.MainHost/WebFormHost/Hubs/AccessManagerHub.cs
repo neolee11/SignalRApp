@@ -10,18 +10,18 @@ using WebGrease;
 
 namespace WebFormHost.Hubs
 {
-    [HubName("AccessManager")]
+    [HubName("accessManager")]
     public class AccessManagerHub : Hub
     {
         public void BroadCastMessage(string message)
         {
             Clients.Caller.getMessage(message); //same as below
-            Clients.Client(Context.ConnectionId).getMessage(message); //Context.ConnectionId is the caller client's connection id
+            //Clients.Client(Context.ConnectionId).getMessage(message); //Context.ConnectionId is the caller client's connection id
 
             //Clients.Others.getMessage(message) //all other clients besides me...same as below
             //Clients.AllExcept(Context.ConnectionId).getMessage(message)
 
-            Clients.All.getMessage(message);
+            //Clients.All.getMessage(message);
         }
 
         public void JoinGroup(string groupName, int b)
@@ -54,6 +54,21 @@ namespace WebFormHost.Hubs
             return false;
         }
 
+        public override Task OnConnected()
+        {
+            return base.OnConnected();
+        }
+
+        public override Task OnDisconnected()
+        {
+            return base.OnDisconnected();
+        }
+
+        public override Task OnReconnected()
+        {
+            return base.OnReconnected();
+        }
+
     }
 
     public class CustomData
@@ -61,5 +76,13 @@ namespace WebFormHost.Hubs
         public int Id { get; set; }
         public string Message { get; set; }
 
+        /// <summary>
+        /// This is how you can send data from outside a hub - retrieve hub context via dependency resolver
+        /// </summary>
+        private  void Send()
+        {
+            var context = GlobalHost.ConnectionManager.GetHubContext<AccessManagerHub>();
+            context.Clients.All.getMessage("A message");
+        }
     }
 }

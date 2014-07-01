@@ -2,9 +2,18 @@ Hubs protocol:
 Base end point is /signalr
 Optional: get JS metadata (JS proxies) from /signalr/hubs
 
-Implementaion details:
+Need to know:
+1. Groups are not persisted. 
+
+Server side Implementaion details:
 1. Grab SignalR from Nuget            
-2. add line 
-  app.MapSignalR(); 
-  to the Startup.Configuration method
-3. Groups are not persisted. 
+2. add the line below to the Startup.Configuration method
+   app.MapSignalR(); 
+3. Add hubs on the server side
+
+Client side Implementation - jQuery
+1. Get reference to hub (hubs become properties on $.connection)
+2. Wire up events
+3. Start hub connection
+4. Call method
+5. Done
