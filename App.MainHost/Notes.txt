@@ -1,0 +1,10 @@
+Hubs protocol:
+Base end point is /signalr
+Optional: get JS metadata (JS proxies) from /signalr/hubs
+
+Implementaion details:
+1. Grab SignalR from Nuget            
+2. add line 
+  app.MapSignalR(); 
+  to the Startup.Configuration method
+3. Groups are not persisted. 
