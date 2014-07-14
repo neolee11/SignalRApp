@@ -15,13 +15,13 @@ namespace WebFormHost.Hubs
     {
         public void BroadCastMessage(string message)
         {
-            Clients.Caller.getMessage(message); //same as below
+            //Clients.Caller.getMessage(message); //same as below
             //Clients.Client(Context.ConnectionId).getMessage(message); //Context.ConnectionId is the caller client's connection id
 
             //Clients.Others.getMessage(message) //all other clients besides me...same as below
             //Clients.AllExcept(Context.ConnectionId).getMessage(message)
 
-            //Clients.All.getMessage(message);
+            Clients.All.getMessage("ClientID " + Context.ConnectionId.ToString() + ": " + message);
         }
 
         public void JoinGroup(string groupName, int b)
