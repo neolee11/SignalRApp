@@ -211,6 +211,8 @@
     <Content Include="SignalR.Sample\SignalR.StockTicker.js" />
     <Content Include="SignalR.Sample\StockTicker.css" />
     <Content Include="SignalR.Sample\StockTicker.html" />
+    <Content Include="SignalR.Sample\StockTickerWebForm.aspx" />
+    <Content Include="SignalRInHtml.html" />
     <Content Include="SingletonWebPage.aspx" />
     <Content Include="Site.Master" />
     <Content Include="ViewSwitcher.ascx" />
@@ -326,6 +328,13 @@
     <Compile Include="SignalR.Sample\Stock.cs" />
     <Compile Include="SignalR.Sample\StockTicker.cs" />
     <Compile Include="SignalR.Sample\StockTickerHub.cs" />
+    <Compile Include="SignalR.Sample\StockTickerWebForm.aspx.cs">
+      <DependentUpon>StockTickerWebForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SignalR.Sample\StockTickerWebForm.aspx.designer.cs">
+      <DependentUpon>StockTickerWebForm.aspx</DependentUpon>
+    </Compile>
     <Compile Include="SingletonWebPage.aspx.cs">
       <DependentUpon>SingletonWebPage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

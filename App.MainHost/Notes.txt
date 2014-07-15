@@ -4,6 +4,7 @@ Optional: get JS metadata (JS proxies) from /signalr/hubs
 
 Need to know:
 1. Groups are not persisted. 
+2. Nuget package: Install-Package Microsoft.AspNet.SignalR
 
 Server side Implementaion details:
 1. Grab SignalR from Nuget            
@@ -11,9 +12,29 @@ Server side Implementaion details:
    app.MapSignalR(); 
 3. Add hubs on the server side
 
-Client side Implementation - jQuery
+Client side Implementation 
+- jQuery with static proxy file (/signalr/hubs)
 1. Get reference to hub (hubs become properties on $.connection)
 2. Wire up events
 3. Start hub connection
 4. Call method
 5. Done
+
+- jQuery without proxy file 
+1. create hubConnection - Derived from $.connection
+2. Get dynamic proxy
+3. wire up events based on method/event handler name via on
+4. Start & invoke methods based on method name via invoke
+
+- .NET Client (WinRT, WPF, WinForm, Windows Phone App, etc)
+1. Create HubConnection
+2. Create hub proxy via CreateHubProxy
+3. Wire up event handlers via On
+4. Start connection with Start
+5. Call methods via Invoke
+
+
+Self Hosting - sits on top of OWIN
+1. Define startup class with IAppBuilder method signature
+2. Map hubs onto IAppBuilder (route)
+3. No automatic scanning of referenced assemblies

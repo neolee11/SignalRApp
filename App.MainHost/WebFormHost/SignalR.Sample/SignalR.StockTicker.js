@@ -105,6 +105,8 @@ $(function () {
         }
     });
 
+    $.connection.hub.log = true;
+
     // Start the connection
     $.connection.hub.start()
         .then(init)
