@@ -54,13 +54,34 @@ namespace WebFormHost.Hubs
             return false;
         }
 
+
+        public void IsAnyoneAccessingPage()
+        {
+            bool alreadyAccessed = false; //ConnectionStatus.ConnectedIds.Any();
+
+            foreach (var connectionId in ConnectionStatus.ConnectedIds)
+            {
+                if (connectionId != Context.ConnectionId)
+                {
+                    alreadyAccessed = true;
+                    break;
+                }
+            }
+
+            Clients.Caller.updateAccessPageStatus(alreadyAccessed);
+        }
+
+
         public override Task OnConnected()
         {
+            if (ConnectionStatus.ConnectedIds.Any() == false)
+                ConnectionStatus.ConnectedIds.Add(Context.ConnectionId);
             return base.OnConnected();
         }
 
         public override Task OnDisconnected()
         {
+            ConnectionStatus.ConnectedIds.Remove(Context.ConnectionId);
             return base.OnDisconnected();
         }
 
@@ -79,7 +100,7 @@ namespace WebFormHost.Hubs
         /// <summary>
         /// This is how you can send data from outside a hub - retrieve hub context via dependency resolver
         /// </summary>
-        private  void Send()
+        private void Send()
         {
             var context = GlobalHost.ConnectionManager.GetHubContext<AccessManagerHub>();
             context.Clients.All.getMessage("A message");

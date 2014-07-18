@@ -24,7 +24,8 @@
             <textarea id="myTextArea" style="width: 400px"></textarea>
             <br />
             <br />
-            <asp:Button runat="server" ID="btnSave" Text="Save" />  
+            <label id="lblAccessMsg"></label>
+            <input type="button" id="btnSave" value="Save"  />
         </div>
     </form>
 
@@ -39,21 +40,31 @@
             $('#btnSendMsg').click(sendClientMessage);
 
             //One way
-
             $.connection.hub.logging = true;
             //$.connection.hub.url = "http://localhost:63213/signalr";
 
             accessManager = $.connection.accessManager;
             accessManager.client.getMessage = getSenderMessage;
+            accessManager.client.updateAccessPageStatus = updateAccessPageStatus;
             //$.connection.hub.start({transport: 'longPolling'}); //if the client insists on using long polling
-            $.connection.hub.start();
+            $.connection.hub.start(function() {
+                accessManager.server.isAnyoneAccessingPage();
+            } );
 
-
-
-            $.connection.hub.error(function (err) {
-                alert(err);
-            });
+            //if (accessManager) {
+            //    accessManager.server.isAnyoneAccessingPage();
+            //}
         });
+
+        function updateAccessPageStatus(alreadyAccessed) {
+            if (alreadyAccessed) {
+                $('#btnSave').attr('disabled', 'disabled');
+                $('#lblAccessMsg').text("Someone else already accessing this page");
+            } else {
+                $('#btnSave').removeAttr('disabled');
+                $('#lblAccessMsg').text("");
+            }
+        }
 
         function getSenderMessage(message) {
             //alert("getting: " + message);
@@ -61,19 +72,18 @@
         }
 
         function sendClientMessage() {
-            //var msg = $('#myTextArea').val();
+            var msg = $('#myTextArea').val();
 
             if (accessManager) {
-                accessManager.server.broadCastMessage('aaddaf');
+                accessManager.server.broadCastMessage(msg);
             } else {
                 alert('hub not set up');
             }
         }
 
-        //$.connection.hub.error(function (err) {
-        //    alert(err);
-        //});
-
+        $.connection.hub.error(function (err) {
+            alert(err);
+        });
 
     </script>
 
